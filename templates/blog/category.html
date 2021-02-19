@@ -1,0 +1,20 @@
+{% extends "baseBlog.html" %}
+{% load static %}
+
+{% block headStatic %}
+<link rel="stylesheet" href="{% static 'blog/css/common.css' %}"/>
+{% endblock %}
+
+{% block wrapper %}
+<p class="title"><b>{{category}}</b>相关的文章如下:</p>
+<div class="layui-row">
+    <div class="layui-col-md7 layui-col-md-offset2">
+        {% for article in articles %}
+        <div class="layui-row">
+            <a href="{{article.get_absolute_url}}" class="layui-col-md8 layui-text article-item-link">{{article.title}}</a>
+            <span class="layui-col-md4 layui-word-aux article-item-date">{{article.created_date}}</span>
+        </div>
+        {%endfor%}
+    </div>
+</div>
+{% endblock %}

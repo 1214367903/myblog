@@ -1,0 +1,23 @@
+.article-title {
+    font-size: 42px;
+    font-weight: bolder;
+}
+
+pre {
+    position: relative;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    border-radius: 3px;
+    border: 1px solid #c3ccd0;
+    background: #fff;
+    overflow: hidden;
+}
+
+code {
+    display: block;
+    padding: 12px 24px;
+    overflow-y: auto;
+    font-weight: 300;
+    font-family: Menlo, monospace;
+    font-size: 0.8em;
+}

@@ -1,0 +1,68 @@
+{% extends "baseBlog.html" %}
+{% load static %}
+
+{% block title %}{{article.title}}{% endblock %}
+
+{% block headStatic %}
+<link rel="stylesheet" href="{% static 'blog/css/article.css' %}"/>
+<link rel="stylesheet" href="{% static 'blog/css/toc.css' %}" />
+<link href="https://cdn.bootcdn.net/ajax/libs/tocbot/4.9.1/tocbot.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/tocbot/4.9.1/tocbot.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.5.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/marked/1.2.7/marked.min.js"></script>
+{% endblock %}
+
+{% block wrapper %}
+<div class="layui-row">
+    <div class="layui-col-md10 layui-col-md-offset1">
+        <p class="article-title">{{article.title}}</p>
+        <div class="layui-word-aux">
+            <span><i class="layui-icon layui-icon-time"></i>{{article.created_date}}</span>
+            <span><i class="layui-icon layui-icon-note"></i>{{article.category}}</span>
+            <span><i class="layui-icon layui-icon-fire"></i>{{article.views}}</span>
+        </div>
+        <div class="content">
+            {{article.content}}
+        </div>
+    </div>
+    <div class="layui-col-md1">
+        <div class="toc"></div>
+    </div>
+</div>
+{% endblock %}
+{% block footStatic %}
+<script>
+// 这个脚本用于解析md文档
+const md = JSON.parse(document.getElementsByClassName("content")[0].innerText);
+marked.setOptions({
+    highlight: function (code) {
+        return hljs.highlightAuto(code).value;
+    },
+});
+document.getElementsByClassName("content")[0].innerHTML = marked(md);
+
+</script>
+<script>
+// 这个脚本用于添加目录
+var id = 1;
+$(".content")
+    .children("h1,h2,h3,h4,h5")
+    .each(function () {
+        $(this).attr("id", "title-" + id);
+        id++;
+    });
+tocbot.init({
+    tocSelector: ".toc",
+    contentSelector: ".content",
+    headingSelector: "h1, h2",
+    hasInnerContainers: true,
+    positionFixedSelector: ".toc",
+});
+</script>
+<script>
+// 这个脚本用于添加防盗链信息
+$('.content').append('<p class="layui-word-aux">本文首发于' + document.URL + ', 如需转载请联系作者: {{my_email}}</p>')
+</script>
+{% endblock %}

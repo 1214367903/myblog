@@ -1,0 +1,31 @@
+{% extends "baseBlog.html" %}
+{% load static %}
+
+{% block headStatic %}
+<link rel="stylesheet" href="{% static 'blog/css/common.css' %}"/>
+{% endblock %}
+
+{% block wrapper %}
+<div class="layui-row">
+<div class="layui-col-md7 layui-col-md-offset2">
+<ul class="layui-timeline">
+{% for year,articles in article_archive.items %}
+<li class="layui-timeline-item">
+    <i class="layui-icon layui-timeline-axis layui-icon-circle"></i>
+    <div class="layui-timeline-content">
+        <h3 class="layui-timeline-title">{{year}}</h3>
+        <div class="article-items">
+            {% for article in articles %}
+            <div class="layui-row">
+                <a href="{{article.get_absolute_url}}" class="layui-col-md8 layui-text article-item-link">{{article.title}}</a>
+                <span class="layui-col-md4 layui-word-aux article-item-date">{{article.created_date}}</span>
+            </div>
+            {%endfor%}
+        </div>
+    </div>
+</li>
+{%endfor%}
+</ul>
+</div>
+</div>
+{% endblock %}

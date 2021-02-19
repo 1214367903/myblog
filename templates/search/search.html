@@ -1,0 +1,25 @@
+{% extends "baseBlog.html" %}
+{% load static %}
+
+{% block headStatic %}
+<link rel="stylesheet" href="{% static 'blog/css/common.css' %}"/>
+{% endblock %}
+
+{% block wrapper %}
+<p class="title">搜索<b>{{query}}</b>结果如下:</p>
+<div class="layui-row">
+    <div class="layui-col-md7 layui-col-md-offset2">
+        {% for result in page.object_list %}
+        <div class="layui-row">
+            <a href="{{result.object.get_absolute_url}}" class="layui-col-md8 layui-text article-item-link">{{result.object.title}}</a>
+            <span class="layui-col-md4 layui-word-aux article-item-date">{{result.object.created_date}}</span>
+        </div>
+        {% empty %}
+        <h2>
+            <i class="layui-icon layui-icon-face-cry" style="font-size: 96px;"></i>
+            什么都没找到...
+        </h2>
+        {%endfor%}
+    </div>
+</div>
+{% endblock %}

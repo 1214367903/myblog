@@ -1,0 +1,67 @@
+{% load cache %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}{{blog_name}}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/layui-src@2.5.8/src/css/layui.css">
+    <script src="https://cdn.bootcdn.net/ajax/libs/layui/2.5.7/layui.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'blog/css/base.css' %}"/>
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    {% block headStatic %}{% endblock %}
+</head>
+<body>
+<div class="wrapper">
+    <div class="layui-header header" spring="">
+        <div class="layui-container">
+            <form class="search-box" action="/search">
+                <input class="search-input" type="text" name="q" required placeholder="全文检索" autocomplete="off"/>
+            </form>
+            <div class="layui-nav navigation">
+                <li class="layui-nav-item">
+                    <a href="{% url 'blog:index' %}"><i class="layui-icon layui-icon-home"></i>主页</a></li>
+                <li class="layui-nav-item">
+                    <a><i class="layui-icon layui-icon-note"></i>分类</a>
+                    <dl class="layui-nav-child">
+                        {% for item in all_categories %}
+                        <dd><a href="{{item.link}}" target="_blank">{{item.name}}({{item.number}})</a>
+                        </dd>
+                        {% endfor %}
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a><i class="layui-icon layui-icon-about"></i>关于</a>
+                    <dl class="layui-nav-child">
+                        {% for item in about %}
+                        <dd><a href="{{item.link}}" target="_blank">{{item.name}}</a></dd>
+                        {% endfor %}
+                    </dl>
+                </li>
+                <li class="layui-nav-item rss">
+                    <a href="{% url 'rss' %}"><i class="layui-icon layui-icon-rss"></i>RSS订阅</a>
+                </li>
+            </div>
+        </div>
+    </div>
+    <div class="layui-container container">
+        {% block wrapper %}这里似乎空空如也...{% endblock %}
+    </div>
+</div>
+<div class="footer">
+    <a class="layui-word-aux" target="_blank" href="https://beian.miit.gov.cn/#/Integrated/index"><i class="layui-icon layui-icon-auz"></i>{{record_id}}
+    </a>
+</div>
+{% block bodyFooter %}{% endblock %}
+<script>
+layui.use('element', function(){
+    var element = layui.element;
+});
+
+
+</script>
+<!--需要最后加载的js放在这里-->
+{% block footStatic %}{% endblock %}
+</body>
+</html>

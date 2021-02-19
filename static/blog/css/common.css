@@ -1,0 +1,27 @@
+.title {
+    font-size: 32px;
+    font-weight: 260;
+    margin-bottom: 30px;
+    margin-left: 60px;
+}
+
+.article-items {
+    margin-top: 16px;
+    margin-left: 16px;
+}
+
+.article-item-link {
+    display: block;
+    text-decoration: none;
+    font-size: 22px;
+    font-weight: bold;
+    color: #222;
+    padding: 6px 0;
+}
+
+.article-item-date {
+    font-size: 16px;
+    display: block;
+    text-align: right;
+    align-items: center;
+}

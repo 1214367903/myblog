@@ -1,0 +1,13 @@
+[run]
+branch = True
+source = .
+omit =
+    manage.py
+    */migrations/*
+    myblog/*
+    blog/search_indexes.py
+    blog/sitemap.py
+    blog/cache.py
+[report]
+show_missing = True
+skip_covered = True
