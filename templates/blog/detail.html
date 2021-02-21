@@ -24,7 +24,6 @@
             <span><i class="layui-icon layui-icon-fire"></i>{{article.views}}</span>
         </div>
         <div class="content">
-            {{article.content}}
         </div>
     </div>
     <div class="layui-col-md1">
@@ -35,13 +34,12 @@
 {% block footStatic %}
 <script>
 // 这个脚本用于解析md文档
-const md = JSON.parse(document.getElementsByClassName("content")[0].innerText);
 marked.setOptions({
     highlight: function (code) {
         return hljs.highlightAuto(code).value;
     },
 });
-document.getElementsByClassName("content")[0].innerHTML = marked(md);
+document.getElementsByClassName("content")[0].innerHTML = marked({{article.content|safe}});
 
 </script>
 <script>
