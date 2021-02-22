@@ -1,5 +1,6 @@
 .toc {
-    width: 160px;
+    margin-left: 10px;
+    width: auto;
     height: auto;
     z-index: 98;
     padding-top: 10px;

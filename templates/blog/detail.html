@@ -33,14 +33,12 @@
 {% endblock %}
 {% block footStatic %}
 <script>
-// 这个脚本用于解析md文档
 marked.setOptions({
     highlight: function (code) {
         return hljs.highlightAuto(code).value;
     },
 });
 document.getElementsByClassName("content")[0].innerHTML = marked({{article.content|safe}});
-
 </script>
 <script>
 // 这个脚本用于添加目录

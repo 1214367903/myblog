@@ -18,7 +18,7 @@
             {% for article in articles %}
             <div class="layui-row">
                 <a href="{{article.get_absolute_url}}" class="layui-col-md8 layui-text article-item-link">{{article.title}}</a>
-                <span class="layui-col-md4 layui-word-aux article-item-date">{{article.created_date}}</span>
+                <span class="layui-col-md4 layui-word-aux article-item-date">{{article.created_date|date:"Y-m-d"}}</span>
             </div>
             {%endfor%}
         </div>
