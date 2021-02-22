@@ -23,7 +23,7 @@ from django.db.models import signals
 from django.dispatch import receiver
 from django.urls import reverse
 
-from .models import Article
+from .models import Article, Category
 
 
 def view_wrapper(func):
@@ -58,17 +58,15 @@ def on_article_init(instance, **kwargs):
 
 @receiver(signals.post_save, sender=Article)
 def on_article_save(instance, created, **kwargs):
-    if created:
-        expire_view_cache(reverse('blog:index'))
-        expire_view_cache(instance.category.get_absolute_url())
-        return
-    if instance.__original_category != instance.category:
-        # 情景1,文章改分类,此时新旧分类的视图缓存失效,博客信息失效
-        expire_view_cache(instance.category.get_absolute_url())
-        expire_view_cache(instance.__original_category.get_absolute_url())
+    if created or instance.__original_category != instance.category:
+        # 如果是创建文章或者文章分类改变了,此时所有缓存失效
+        expire_categories_cache()
         expire_view_cache(reverse('blog:blog_info'))
+        expire_view_cache(reverse('blog:index'))
+        # 由于所有缓存都没了,直接退出就完事了
+        return
     if instance.__original_title != instance.title or instance.__original_created_date != instance.created_date:
-        # 情景2,标题或创建时间改变,此时主页和对应分类页缓存失效
+        # 如果只是标题或创建时间改变,此时主页和对应分类页缓存失效
         # 注意,这个情景和上一个不冲突
         expire_view_cache(reverse('blog:index'))
         expire_view_cache(instance.category.get_absolute_url())
@@ -76,10 +74,16 @@ def on_article_save(instance, created, **kwargs):
 
 @receiver(signals.post_delete, sender=Article)
 def on_article_delete(instance, **kwargs):
-    expire_view_cache(reverse('blog:index'))
-    expire_view_cache(instance.category.get_absolute_url())
+    expire_categories_cache()
     expire_view_cache(reverse('blog:blog_info'))
+    expire_view_cache(reverse('blog:index'))
 
 
 def expire_view_cache(path) -> bool:
     return bool(cache.delete(f'blog:{path}'))
+
+
+def expire_categories_cache():
+    # 这个函数删除所有分类页面的缓存
+    for cate in Category.objects.all():
+        expire_view_cache(cate.get_absolute_url())
